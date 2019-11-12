@@ -1,0 +1,30 @@
+import time
+import winsound
+import psutil
+import pyttsx3
+
+
+def batter():
+    engine = pyttsx3.init()
+    voices = engine.getProperty('voices')#Gives female voice
+    for voice in voices:
+        engine.setProperty('voice', voice.id)
+    
+    battery = psutil.sensors_battery()
+    k = str(battery.percent)
+    if(k<="25"):
+        p = battery.power_plugged
+        
+        if p==False: p="Not Plugged In"
+        else: p="Plugged In"
+        print(k+'% | '+p)
+        if(p=="Not Plugged In"):
+            engine.say("My battery is getting Low...Charge me as early as possible")
+            engine.runAndWait()
+            time.sleep(10)
+            batter()
+        if(p=="Plugged In"):
+            engine.say("Thanks...I am getting charged.")
+            engine.runAndWait()
+
+batter()
